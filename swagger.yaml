@@ -1,109 +1,495 @@
 openapi: 3.0.0
 info:
-  title: Airline Management API
+  title: Flight Booking API
   version: 1.0.0
 paths:
-  /airlines:
-    get:
-      summary: Retrieve a list of airlines
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              example:
-                - id: 1
-                  name: "Sample Airline"
-                  address: "Sample Address"
-                  iata_code: "SMP"
-                  phone: "123-456-7890"
   /flights:
     get:
-      summary: Retrieve a list of flights
+      summary: Get a list of flights
       responses:
         '200':
           description: Successful response
           content:
             application/json:
               example:
-                - id: 1
-                  airplane_id: 123
-                  airline_id: 1
-                  point_of_departure: "CityA"
-                  destination: "CityB"
-                  datetime_of_departure: "2023-01-01T12:00:00Z"
-                  datetime_of_arrival: "2023-01-01T15:00:00Z"
+                - origin_city: "City1"
+                  origin_code: "C1"
+                  origin_country: "Country1"
+                  destination_city: "City2"
+                  destination_code: "C2"
+                  destination_country: "Country2"
+                  depart_time: "14:30:00"
+                  duration: "3:30:00"
+                  plane: "Plane1"
+                  airline: "Airline1"
+                - origin_city: "City3"
+                  origin_code: "C3"
+                  origin_country: "Country3"
+                  destination_city: "City4"
+                  destination_code: "C4"
+                  destination_country: "Country4"
+                  depart_time: "18:45:00"
+                  duration: "2:45:00"
+                  plane: "Plane2"
+                  airline: "Airline2"
+    post:
+      summary: Create a new flight
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                origin_city:
+                  type: string
+                  maxLength: 64
+                origin_code:
+                  type: string
+                  maxLength: 3
+                origin_country:
+                  type: string
+                  maxLength: 64
+                destination_city:
+                  type: string
+                  maxLength: 64
+                destination_code:
+                  type: string
+                  maxLength: 3
+                destination_country:
+                  type: string
+                  maxLength: 64
+                depart_time:
+                  type: string
+                  format: time
+                duration:
+                  type: string
+                  format: duration
+                plane:
+                  type: string
+                  maxLength: 24
+                airline:
+                  type: string
+                  maxLength: 64
+      responses:
+        '201':
+          description: Flight created successfully
+
+  /flights/{id}:
+    get:
+      summary: Get details of a specific flight
+      parameters:
+        - name: id
+          in: path
+          description: ID of the flight
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                origin_city: "City1"
+                origin_code: "C1"
+                origin_country: "Country1"
+                destination_city: "City2"
+                destination_code: "C2"
+                destination_country: "Country2"
+                depart_time: "14:30:00"
+                duration: "3:30:00"
+                plane: "Plane1"
+                airline: "Airline1"
+    put:
+      summary: Update an existing flight
+      parameters:
+        - name: id
+          in: path
+          description: ID of the flight to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                origin_city:
+                  type: string
+                  maxLength: 64
+                origin_code:
+                  type: string
+                  maxLength: 3
+                origin_country:
+                  type: string
+                  maxLength: 64
+                destination_city:
+                  type: string
+                  maxLength: 64
+                destination_code:
+                  type: string
+                  maxLength: 3
+                destination_country:
+                  type: string
+                  maxLength: 64
+                depart_time:
+                  type: string
+                  format: time
+                duration:
+                  type: string
+                  format: duration
+                plane:
+                  type: string
+                  maxLength: 24
+                airline:
+                  type: string
+                  maxLength: 64
+      responses:
+        '200':
+          description: Flight updated successfully
+    delete:
+      summary: Delete a flight
+      parameters:
+        - name: id
+          in: path
+          description: ID of the flight to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Flight deleted successfully
+
   /passengers:
     get:
-      summary: Retrieve a list of passengers
+      summary: Get a list of passengers
       responses:
         '200':
           description: Successful response
           content:
             application/json:
               example:
-                - id: 1
-                  name: "John Doe"
-                  date_of_birth: "1990-01-01"
-                  passport: 123456789
-                  contact_information: "john.doe@example.com"
-  /staff:
+                - first_name: "John"
+                  last_name: "Doe"
+                  gender: "Male"
+                - first_name: "Jane"
+                  last_name: "Doe"
+                  gender: "Female"
+    post:
+      summary: Create a new passenger
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  maxLength: 64
+                last_name:
+                  type: string
+                  maxLength: 64
+                gender:
+                  type: string
+                  maxLength: 20
+      responses:
+        '201':
+          description: Passenger created successfully
+
+  /passengers/{id}:
     get:
-      summary: Retrieve a list of staff members
+      summary: Get details of a specific passenger
+      parameters:
+        - name: id
+          in: path
+          description: ID of the passenger
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: Successful response
           content:
             application/json:
               example:
-                - id: 1
-                  name: "Staff Member"
-                  position: "Pilot"
-                  date_of_employment: "2022-01-01"
-                  contact_phone: "987-654-3210"
-                  flight_id: 1
-                  airline_id: 1
-  /bookings:
+                first_name: "John"
+                last_name: "Doe"
+                gender: "Male"
+    put:
+      summary: Update an existing passenger
+      parameters:
+        - name: id
+          in: path
+          description: ID of the passenger to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  maxLength: 64
+                last_name:
+                  type: string
+                  maxLength: 64
+                gender:
+                  type: string
+                  maxLength: 20
+      responses:
+        '200':
+          description: Passenger updated successfully
+    delete:
+      summary: Delete a passenger
+      parameters:
+        - name: id
+          in: path
+          description: ID of the passenger to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Passenger deleted successfully
+
+  /tickets:
     get:
-      summary: Retrieve a list of bookings
+      summary: Get a list of tickets
       responses:
         '200':
           description: Successful response
           content:
             application/json:
               example:
-                - id: 1
-                  airline_id: 1
-                  flight_id: 1
-                  passenger_id: 1
-                  date: "2023-01-01T10:00:00Z"
-                  place_of_passenger: 1
+                - user: "username1"
+                  flight:
+                    origin_city: "City1"
+                    origin_code: "C1"
+                    origin_country: "Country1"
+                    destination_city: "City2"
+                    destination_code: "C2"
+                    destination_country: "Country2"
+                    depart_time: "14:30:00"
+                    duration: "3:30:00"
+                    plane: "Plane1"
+                    airline: "Airline1"
+                  passengers:
+                    - first_name: "John"
+                      last_name: "Doe"
+                      gender: "Male"
+                  seat_class: "Economy"
+                  booking_date: "2023-01-01T12:00:00"
                   status: "Confirmed"
-  /airplanes:
+    post:
+      summary: Create a new ticket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                  description: "Username of the user"
+                flight_id:
+                  type: integer
+                  description: "ID of the flight"
+                passengers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      first_name:
+                        type: string
+                        maxLength: 64
+                      last_name:
+                        type: string
+                        maxLength: 64
+                      gender:
+                        type: string
+                        maxLength: 20
+                seat_class:
+                  type: string
+                  maxLength: 20
+                status:
+                  type: string
+                  maxLength: 45
+      responses:
+        '201':
+          description: Ticket created successfully
+
+  /tickets/{id}:
     get:
-      summary: Retrieve a list of airplanes
+      summary: Get details of a specific ticket
+      parameters:
+        - name: id
+          in: path
+          description: ID of the ticket
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: Successful response
           content:
             application/json:
               example:
-                - id: 1
-                  airline_id: 1
-                  model_name: "Sample Model"
-                  manufacturer: "Sample Manufacturer"
-                  year_of_manufacture: "2020-01-01"
-                  number_of_seats: 150
-                  registration_number: "ABC123"
-  /staff_airplanes:
+                user: "username1"
+                flight:
+                  origin_city: "City1"
+                  origin_code: "C1"
+                  origin_country: "Country1"
+                  destination_city: "City2"
+                  destination_code: "C2"
+                  destination_country: "Country2"
+                  depart_time: "14:30:00"
+                  duration: "3:30:00"
+                  plane: "Plane1"
+                  airline: "Airline1"
+                passengers:
+                  - first_name: "John"
+                    last_name: "Doe"
+                    gender: "Male"
+                seat_class: "Economy"
+                booking_date: "2023-01-01T12:00:00"
+                status: "Confirmed"
+    put:
+      summary: Update an existing ticket
+      parameters:
+        - name: id
+          in: path
+          description: ID of the ticket to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                  description: "Username of the user"
+                flight_id:
+                  type: integer
+                  description: "ID of the flight"
+                passengers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      first_name:
+                        type: string
+                        maxLength: 64
+                      last_name:
+                        type: string
+                        maxLength: 64
+                      gender:
+                        type: string
+                        maxLength: 20
+                seat_class:
+                  type: string
+                  maxLength: 20
+                status:
+                  type: string
+                  maxLength: 45
+      responses:
+        '200':
+          description: Ticket updated successfully
+    delete:
+      summary: Delete a ticket
+      parameters:
+        - name: id
+          in: path
+          description: ID of the ticket to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Ticket deleted successfully
+
+  /tickets/search:
     get:
-      summary: Retrieve a list of staff-airplane relationships
+      summary: Search for tickets based on origin city
+      parameters:
+        - name: origin_city
+          in: query
+          description: Departure city for ticket search
+          required: true
+          schema:
+            type: string
+            maxLength: 64
       responses:
         '200':
           description: Successful response
           content:
             application/json:
               example:
-                - id: 1
-                  staff_id: 1
-                  airplane_id: 1
+                - user: "username1"
+                  flight:
+                    origin_city: "City1"
+                    origin_code: "C1"
+                    origin_country: "Country1"
+                    destination_city: "City2"
+                    destination_code: "C2"
+                    destination_country: "Country2"
+                    depart_time: "14:30:00"
+                    duration: "3:30:00"
+                    plane: "Plane1"
+                    airline: "Airline1"
+                  passengers:
+                    - first_name: "John"
+                      last_name: "Doe"
+                      gender: "Male"
+                  seat_class: "Economy"
+                  booking_date: "2023-01-01T12:00:00"
+                  status: "Confirmed"
+
+  /tickets/search-by-destination:
+    get:
+      summary: Search for tickets based on destination city
+      parameters:
+        - name: destination_city
+          in: query
+          description: Destination city for ticket search
+          required: true
+          schema:
+            type: string
+            maxLength: 64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                - user: "username2"
+                  flight:
+                    origin_city: "City3"
+                    origin_code: "C3"
+                    origin_country: "Country3"
+                    destination_city: "City4"
+                    destination_code: "C4"
+                    destination_country: "Country4"
+                    depart_time: "18:45:00"
+                    duration: "2:45:00"
+                    plane: "Plane2"
+                    airline: "Airline2"
+                  passengers:
+                    - first_name: "Jane"
+                      last_name: "Doe"
+                      gender: "Female"
+                  seat_class: "Business"
+                  booking_date: "2023-01-02T15:30:00"
+                  status: "Confirmed"
