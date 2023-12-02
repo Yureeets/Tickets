@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+  title: Airline Management API
+  version: 1.0.0
+paths:
+  /airlines:
+    get:
+      summary: Retrieve a list of airlines
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                - id: 1
+                  name: "Sample Airline"
+                  address: "Sample Address"
+                  iata_code: "SMP"
+                  phone: "123-456-7890"
+  /flights:
+    get:
+      summary: Retrieve a list of flights
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                - id: 1
+                  airplane_id: 123
+                  airline_id: 1
+                  point_of_departure: "CityA"
+                  destination: "CityB"
+                  datetime_of_departure: "2023-01-01T12:00:00Z"
+                  datetime_of_arrival: "2023-01-01T15:00:00Z"
+  /passengers:
+    get:
+      summary: Retrieve a list of passengers
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                - id: 1
+                  name: "John Doe"
+                  date_of_birth: "1990-01-01"
+                  passport: 123456789
+                  contact_information: "john.doe@example.com"
+  /staff:
+    get:
+      summary: Retrieve a list of staff members
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                - id: 1
+                  name: "Staff Member"
+                  position: "Pilot"
+                  date_of_employment: "2022-01-01"
+                  contact_phone: "987-654-3210"
+                  flight_id: 1
+                  airline_id: 1
+  /bookings:
+    get:
+      summary: Retrieve a list of bookings
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                - id: 1
+                  airline_id: 1
+                  flight_id: 1
+                  passenger_id: 1
+                  date: "2023-01-01T10:00:00Z"
+                  place_of_passenger: 1
+                  status: "Confirmed"
+  /airplanes:
+    get:
+      summary: Retrieve a list of airplanes
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                - id: 1
+                  airline_id: 1
+                  model_name: "Sample Model"
+                  manufacturer: "Sample Manufacturer"
+                  year_of_manufacture: "2020-01-01"
+                  number_of_seats: 150
+                  registration_number: "ABC123"
+  /staff_airplanes:
+    get:
+      summary: Retrieve a list of staff-airplane relationships
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                - id: 1
+                  staff_id: 1
+                  airplane_id: 1

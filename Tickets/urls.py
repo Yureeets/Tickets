@@ -16,10 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import hello_world
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('api/v1/hello-world-<int:variant_number>/', hello_world, name='hello_world'),
 ]
 
