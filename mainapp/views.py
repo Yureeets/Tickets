@@ -11,7 +11,6 @@ from rest_framework import generics
 from .models import Passenger, Flight, Ticket
 from .serializers import PassengerSerializer, FlightSerializer, TicketSerializer
 
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -25,6 +24,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from .models import Passenger
 from .serializers import PassengerSerializer
+
 
 class PassengerAPIView(APIView):
     def get(self, request, pk=None):
@@ -56,6 +56,43 @@ class PassengerAPIView(APIView):
         passenger.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+class FlightAPIView(APIView):
+    def get(self, request, pk=None):
+        if pk is not None:
+            flight = get_object_or_404(Flight, pk=pk)
+            serializer = FlightSerializer(flight)
+            return Response(serializer.data)
+        else:
+            flights = Flight.objects.all()
+            serializer = FlightSerializer(flights, many=True)
+            return Response({"flights": serializer.data})
+
+    def post(self, request, *args, **kwargs):
+        serializer = FlightSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        new_flight = serializer.save()
+        return Response({"flight": FlightSerializer(new_flight).data}, status=status.HTTP_201_CREATED)
+
+    def put(self, request, pk):
+        flight = get_object_or_404(Flight, pk=pk)
+        serializer = FlightSerializer(flight, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        updated_flight = serializer.save()
+        return Response({"flight": FlightSerializer(updated_flight).data})
+
+    def delete(self, request, pk):
+        flight = get_object_or_404(Flight, pk=pk)
+        flight.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class FlightSearchByCitiesAPIView(APIView):
+    def get(self, request, origin_city, destination_city):
+        flights = Flight.objects.filter(origin_city=origin_city, destination_city=destination_city)
+        serializer = FlightSerializer(flights, many=True)
+        return Response(serializer.data)
 
 
 # class TicketAPIView(APIView):
