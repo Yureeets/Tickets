@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from mainapp.views import PassengerAPIView, FlightAPIView, FlightSearchByCitiesAPIView
+from mainapp.views import PassengerAPIView, FlightAPIView, FlightSearchByCitiesAPIView, TicketListAPIView, \
+    TicketDetailAPIView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -42,11 +43,11 @@ urlpatterns = [
 
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),  # swagger url
     path('api/v1/flights/', FlightAPIView.as_view(), name='flight-list-create'),
-    path('api/v1/flights/<int:pk>/', FlightAPIView.as_view(), name='flight-detail'),
+    path('api/v1/flights/<int:pk>', FlightAPIView.as_view(), name='flight-detail'),
     path('api/v1/flights/cities/<str:origin_city>/<str:destination_city>/', FlightSearchByCitiesAPIView.as_view(),
          name='flight-search-by-cities'),
 
-
-    # path('tickets/', TicketListCreateView.as_view(), name='ticket-list-create'),
-    # path('tickets/<int:pk>/', TicketDetailView.as_view(), name='ticket-detail'),
+    path('api/v1/tickets/', TicketListAPIView.as_view(), name='ticket-list'),
+    path('api/v1/tickets/<int:pk>', TicketDetailAPIView.as_view(), name='ticket-detail'),
 ]
+
