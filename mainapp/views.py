@@ -20,6 +20,12 @@ from .serializers import PassengerSerializer
 from rest_framework import serializers
 
 
+
+
+def index(request):
+    return render(request,"index.html")
+
+
 class PassengerAPIView(APIView):
     def get(self, request, pk=None):
         if pk is not None:

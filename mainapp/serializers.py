@@ -38,10 +38,6 @@ class TicketSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         passengers_data = validated_data.pop('passengers')
         instance = super().update(instance, validated_data)
-
-        # Handle the update logic for passengers if needed
-        # For example, you might want to delete existing passengers and add new ones
-
         instance.passengers.clear()
 
         for passenger_data in passengers_data:

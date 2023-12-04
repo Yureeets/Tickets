@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from mainapp.views import PassengerAPIView, FlightAPIView, FlightSearchByCitiesAPIView, TicketListAPIView, \
-    TicketDetailAPIView
+    TicketDetailAPIView, index
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -37,6 +37,9 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+
+    path("",index),
+
     path("api/v1/passengers", PassengerAPIView.as_view(), name="passengers-list"),  # post and get passenger
     path("api/v1/passengers/<int:pk>", PassengerAPIView.as_view(), name="passenger-detail"),
     # get, put, delete data of specific passenger
